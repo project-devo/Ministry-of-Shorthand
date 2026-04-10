@@ -9,6 +9,10 @@ import { buildMetadata } from "@/lib/site";
 
 export const dynamic = "force-dynamic";
 
+type CourseBySlug = NonNullable<Awaited<ReturnType<typeof getCourseBySlug>>>;
+type CourseSection = CourseBySlug["sections"][number];
+type CourseLesson = CourseSection["lessons"][number];
+
 export const generateMetadata = async ({
   params,
 }: {
@@ -65,8 +69,8 @@ const CourseDetailPage = async ({
       : null;
 
   const freePreviewLesson = course.sections
-    .flatMap((section) => section.lessons)
-    .find((lesson) => lesson.isFree);
+    .flatMap((section: CourseSection) => section.lessons)
+    .find((lesson: CourseLesson) => lesson.isFree);
 
   return (
     <section className="mx-auto w-full max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
@@ -113,7 +117,7 @@ const CourseDetailPage = async ({
           <div className="rounded-[2rem] border border-border/70 bg-card/80 p-6 shadow-lg shadow-black/5">
             <h2 className="mb-6 text-2xl font-semibold text-foreground">Curriculum</h2>
             <div className="space-y-6">
-              {course.sections.map((section) => (
+              {course.sections.map((section: CourseSection) => (
                 <div key={section.id} className="space-y-3">
                   <div className="flex items-center justify-between gap-4">
                     <h3 className="text-lg font-semibold text-foreground">
@@ -124,7 +128,7 @@ const CourseDetailPage = async ({
                     </span>
                   </div>
                   <div className="space-y-3">
-                    {section.lessons.map((lesson) => (
+                    {section.lessons.map((lesson: CourseLesson) => (
                       <div
                         key={lesson.id}
                         className="flex flex-col gap-3 rounded-2xl border border-border/70 bg-background/70 p-4 sm:flex-row sm:items-center sm:justify-between"
