@@ -1,0 +1,312 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  STUDENT
+  INSTRUCTOR
+  ADMIN
+}
+
+enum PracticeLevel {
+  BEGINNER
+  INTERMEDIATE
+  ADVANCED
+}
+
+enum CourseLevel {
+  BEGINNER
+  INTERMEDIATE
+  ADVANCED
+}
+
+enum SubscriptionPlan {
+  MONTHLY
+  ANNUAL
+}
+
+enum SubscriptionStatus {
+  ACTIVE
+  CANCELLED
+  EXPIRED
+  PAST_DUE
+}
+
+enum PaymentStatus {
+  PENDING
+  PAID
+  FAILED
+  REFUNDED
+}
+
+enum PaymentKind {
+  COURSE
+  SUBSCRIPTION
+}
+
+enum InquiryStatus {
+  NEW
+  CONTACTED
+  CLOSED
+}
+
+model User {
+  id             String           @id @default(cuid())
+  name           String
+  email          String           @unique
+  password       String?
+  role           Role             @default(STUDENT)
+  isBanned       Boolean          @default(false)
+  emailVerified  DateTime?
+  image          String?
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+  accounts       Account[]
+  sessions       Session[]
+  courses        Course[]         @relation("InstructorCourses")
+  enrollments    Enrollment[]
+  lessonProgress LessonProgress[]
+  testAttempts   TestAttempt[]
+  liveClasses    LiveClass[]      @relation("InstructorLiveClasses")
+  subscriptions  Subscription[]
+  payments       Payment[]
+  notifications  Notification[]
+}
+
+model Account {
+  id                String   @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?  @db.Text
+  access_token      String?  @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?  @db.Text
+  session_state     String?
+  user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+  identifier String
+  token      String @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+model Course {
+  id           String       @id @default(cuid())
+  title        String
+  slug         String       @unique
+  description  String       @db.Text
+  thumbnail    String
+  price        Decimal      @db.Decimal(10, 2)
+  level        CourseLevel  @default(BEGINNER)
+  isPublished  Boolean      @default(false)
+  instructorId String
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+  instructor   User         @relation("InstructorCourses", fields: [instructorId], references: [id], onDelete: Cascade)
+  sections     Section[]
+  enrollments  Enrollment[]
+  payments     Payment[]
+
+  @@index([instructorId])
+}
+
+model Section {
+  id        String   @id @default(cuid())
+  title     String
+  order     Int
+  courseId  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  course    Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  lessons   Lesson[]
+
+  @@unique([courseId, order])
+  @@index([courseId])
+}
+
+model Lesson {
+  id        String           @id @default(cuid())
+  title     String
+  order     Int
+  videoUrl  String
+  duration  Int
+  isFree    Boolean          @default(false)
+  pdfUrl    String?
+  sectionId String
+  createdAt DateTime         @default(now())
+  updatedAt DateTime         @updatedAt
+  section   Section          @relation(fields: [sectionId], references: [id], onDelete: Cascade)
+  progress  LessonProgress[]
+
+  @@unique([sectionId, order])
+  @@index([sectionId])
+}
+
+model Enrollment {
+  id        String   @id @default(cuid())
+  userId    String
+  courseId  String
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  course    Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, courseId])
+  @@index([courseId])
+}
+
+model LessonProgress {
+  id        String   @id @default(cuid())
+  userId    String
+  lessonId  String
+  completed Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  lesson    Lesson   @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, lessonId])
+  @@index([lessonId])
+}
+
+model PracticeTest {
+  id         String         @id @default(cuid())
+  title      String
+  speedWPM   Int
+  audioUrl   String
+  transcript String         @default("") @db.Text
+  level      PracticeLevel
+  isFree     Boolean        @default(false)
+  createdAt  DateTime       @default(now())
+  updatedAt  DateTime       @updatedAt
+  attempts   TestAttempt[]
+}
+
+model TestAttempt {
+  id        String       @id @default(cuid())
+  userId    String
+  testId    String
+  score     Decimal      @db.Decimal(5, 2)
+  accuracy  Decimal      @db.Decimal(5, 2)
+  actualWpm Int          @default(0)
+  timeTaken Int
+  responseText String    @default("") @db.Text
+  errorAnalysis Json?
+  createdAt DateTime     @default(now())
+  user      User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  test      PracticeTest @relation(fields: [testId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([testId])
+}
+
+model LiveClass {
+  id           String   @id @default(cuid())
+  title        String
+  scheduledAt  DateTime
+  meetLink     String
+  instructorId String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  instructor   User     @relation("InstructorLiveClasses", fields: [instructorId], references: [id], onDelete: Cascade)
+
+  @@index([instructorId])
+}
+
+model Subscription {
+  id             String             @id @default(cuid())
+  userId         String
+  plan           SubscriptionPlan
+  status         SubscriptionStatus
+  razorpaySubId  String?            @unique
+  startDate      DateTime
+  endDate        DateTime
+  createdAt      DateTime           @default(now())
+  updatedAt      DateTime           @updatedAt
+  user           User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model Payment {
+  id              String        @id @default(cuid())
+  userId          String
+  kind            PaymentKind   @default(COURSE)
+  courseId        String?
+  subscriptionPlan SubscriptionPlan?
+  description     String?
+  amount          Int
+  currency        String        @default("INR")
+  razorpayOrderId String        @unique
+  razorpayPaymentId String?     @unique
+  status          PaymentStatus
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+  user            User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  course          Course?       @relation(fields: [courseId], references: [id], onDelete: SetNull)
+
+  @@index([userId])
+  @@index([courseId])
+}
+
+model Notification {
+  id        String   @id @default(cuid())
+  userId    String
+  message   String   @db.Text
+  isRead    Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, isRead])
+}
+
+model Inquiry {
+  id        String        @id @default(cuid())
+  name      String
+  email     String
+  phone     String
+  interest  String
+  message   String        @db.Text
+  status    InquiryStatus @default(NEW)
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+
+  @@index([status, createdAt])
+}
+
+model SelectionResult {
+  id          String   @id @default(cuid())
+  name        String
+  achievement String
+  batch       String
+  quote       String?  @db.Text
+  image       String?
+  sortOrder   Int      @default(1)
+  isPublished Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([isPublished, sortOrder])
+}
