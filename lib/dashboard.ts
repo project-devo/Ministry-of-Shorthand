@@ -461,3 +461,26 @@ export const isValidCourseLevel = (value?: string): value is CourseLevel => {
 export const isValidPracticeLevel = (value?: string): value is PracticeLevel => {
   return value === "BEGINNER" || value === "INTERMEDIATE" || value === "ADVANCED";
 };
+
+export const getPublicPracticeTests = unstable_cache(async () => {
+  return prisma.practiceTest.findMany({
+    orderBy: [
+      {
+        isFree: "desc",
+      },
+      {
+        level: "asc",
+      },
+      {
+        speedWPM: "asc",
+      },
+    ],
+    select: {
+      id: true,
+      title: true,
+      speedWPM: true,
+      level: true,
+      isFree: true,
+    },
+  });
+}, ["public-practice-tests"], { revalidate: 300 });

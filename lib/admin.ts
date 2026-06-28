@@ -180,32 +180,46 @@ export const getLessonForAdmin = async (lessonId: string) => {
   });
 };
 
-export const getAdminUsers = async (query?: string, pagination?: PaginationInput) => {
+export const getAdminUsers = async (query?: string, role?: Role, pagination?: PaginationInput) => {
   const { skip, take } = getPagination(pagination);
 
-  return prisma.user.findMany({
-    where: query
-      ? {
-          OR: [
-            { name: { contains: query, mode: "insensitive" } },
-            { email: { contains: query, mode: "insensitive" } },
-          ],
-        }
-      : undefined,
-    orderBy: {
-      createdAt: "desc",
-    },
-    skip,
-    take,
-    select: {
-      id: true,
-      name: true,
-      email: true,
-      role: true,
-      isBanned: true,
-      createdAt: true,
-    },
-  });
+  const where: Record<string, unknown> = {};
+
+  if (query) {
+    where.OR = [
+      { name: { contains: query, mode: "insensitive" } },
+      { email: { contains: query, mode: "insensitive" } },
+    ];
+  }
+
+  if (role) {
+    where.role = role;
+  }
+
+  const [users, total] = await Promise.all([
+    prisma.user.findMany({
+      where: Object.keys(where).length > 0 ? where : undefined,
+      orderBy: {
+        createdAt: "desc",
+      },
+      skip,
+      take,
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        role: true,
+        isBanned: true,
+        emailVerified: true,
+        createdAt: true,
+      },
+    }),
+    prisma.user.count({
+      where: Object.keys(where).length > 0 ? where : undefined,
+    }),
+  ]);
+
+  return { users, total };
 };
 
 export const getAdminTests = async () => {

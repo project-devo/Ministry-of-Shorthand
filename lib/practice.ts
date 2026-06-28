@@ -1,17 +1,12 @@
 const normalizeText = (value: string) => {
   return value
     .toLowerCase()
-    .replace(/[^\p{L}\p{N}\s]/gu, " ")
+    .replace(/[^\p{L}\p{N}\s]/gu, "")
     .replace(/\s+/g, " ")
     .trim();
 };
 
-const tokenize = (value: string) => {
-  const normalized = normalizeText(value);
-  return normalized ? normalized.split(" ") : [];
-};
-
-const getWordDistance = (source: string[], target: string[]) => {
+const getDistance = (source: string, target: string) => {
   const matrix = Array.from({ length: source.length + 1 }, (_, rowIndex) =>
     Array.from({ length: target.length + 1 }, (_, columnIndex) => {
       if (rowIndex === 0) {
@@ -55,24 +50,27 @@ export const evaluateDictationAttempt = ({
   targetWpm: number;
   timeTaken: number;
 }) => {
-  const responseWords = tokenize(responseText);
-  const transcriptWords = tokenize(targetTranscript);
+  const responseNormalized = normalizeText(responseText);
+  const transcriptNormalized = normalizeText(targetTranscript);
+  
   const minutesSpent = Math.max(timeTaken / 60, 1 / 60);
-  const actualWpm = Math.max(0, Math.round(responseWords.length / minutesSpent));
-  const distance = getWordDistance(responseWords, transcriptWords);
-  const referenceWordCount = Math.max(transcriptWords.length, 1);
-  const accuracy = Math.max(0, Math.round(((referenceWordCount - distance) / referenceWordCount) * 100));
+  const responseStandardWords = responseNormalized.length / 5;
+  const actualWpm = Math.max(0, Math.round(responseStandardWords / minutesSpent));
+  
+  const distance = getDistance(responseNormalized, transcriptNormalized);
+  const referenceLength = Math.max(transcriptNormalized.length, 1);
+  const accuracy = Math.max(0, Math.round(((referenceLength - distance) / referenceLength) * 100));
   const score = Math.max(0, Math.min(100, Math.round(accuracy * 0.7 + Math.min(actualWpm, targetWpm) * 0.3)));
 
-  const missingWords = Math.max(transcriptWords.length - responseWords.length, 0);
-  const extraWords = Math.max(responseWords.length - transcriptWords.length, 0);
-  const mismatchEstimate = Math.max(distance - Math.abs(responseWords.length - transcriptWords.length), 0);
+  const missingChars = Math.max(transcriptNormalized.length - responseNormalized.length, 0);
+  const extraChars = Math.max(responseNormalized.length - transcriptNormalized.length, 0);
+  const mismatchEstimate = Math.max(distance - Math.abs(responseNormalized.length - transcriptNormalized.length), 0);
 
   const errorAnalysis = [
-    `Reference length: ${transcriptWords.length} words. Your response length: ${responseWords.length} words.`,
-    `Estimated missing words: ${missingWords}, extra words: ${extraWords}, mismatched words: ${mismatchEstimate}.`,
+    `Reference length: ${transcriptNormalized.length} characters. Your response length: ${responseNormalized.length} characters.`,
+    `Estimated missing characters: ${missingChars}, extra characters: ${extraChars}, mismatched characters: ${mismatchEstimate}.`,
     actualWpm >= targetWpm
-      ? `Your speed met the ${targetWpm} WPM target. Focus next on reducing mismatched words.`
+      ? `Your speed met the ${targetWpm} WPM target. Focus next on reducing mismatched characters.`
       : `Your current speed is below the ${targetWpm} WPM target. Focus on finishing more of the dictation before pushing speed.`,
     accuracy >= 85
       ? "Accuracy is strong. Repeat the dictation at a higher playback speed to improve exam readiness."
@@ -84,6 +82,6 @@ export const evaluateDictationAttempt = ({
     accuracy,
     actualWpm,
     errorAnalysis,
-    normalizedResponseText: normalizeText(responseText),
+    normalizedResponseText: responseNormalized,
   };
 };

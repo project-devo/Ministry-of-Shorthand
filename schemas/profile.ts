@@ -22,3 +22,18 @@ export const profilePasswordSchema = z
     path: ["confirmPassword"],
     message: "Passwords do not match.",
   });
+
+export const onboardingSchema = z.object({
+  shorthandLevel: z.enum(["BEGINNER", "INTERMEDIATE", "ADVANCED"], {
+    message: "Please select your shorthand level.",
+  }),
+  examTarget: z
+    .string()
+    .min(2, "Exam target must be at least 2 characters long.")
+    .max(100, "Exam target must be 100 characters or fewer."),
+  preferredSpeed: z
+    .number()
+    .int()
+    .min(40, "Speed must be at least 40 WPM.")
+    .max(200, "Speed must be at most 200 WPM."),
+});

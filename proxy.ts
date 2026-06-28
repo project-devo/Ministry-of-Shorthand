@@ -16,7 +16,7 @@ export const proxy = async (request: NextRequest) => {
     return NextResponse.redirect(loginUrl);
   }
 
-  if (pathname.startsWith("/dashboard") && token.role !== "STUDENT") {
+  if (pathname.startsWith("/dashboard") && !["STUDENT", "ADMIN"].includes(token.role)) {
     return NextResponse.redirect(new URL("/", request.url));
   }
 
