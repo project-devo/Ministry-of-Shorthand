@@ -100,6 +100,7 @@ export const getCourseBySlug = unstable_cache(async (slug: string) => {
               order: true,
               duration: true,
               isFree: true,
+              videoUrl: true,
               pdfUrl: true,
             },
           },

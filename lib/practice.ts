@@ -85,3 +85,22 @@ export const evaluateDictationAttempt = ({
     normalizedResponseText: responseNormalized,
   };
 };
+
+import { unstable_cache } from "next/cache";
+import { prisma } from "@/lib/prisma";
+
+export const getPublicPracticeTests = unstable_cache(async () => {
+  return prisma.practiceTest.findMany({
+    orderBy: [
+      { level: "asc" },
+      { speedWPM: "asc" }
+    ],
+    select: {
+      id: true,
+      title: true,
+      speedWPM: true,
+      level: true,
+      isFree: true,
+    }
+  });
+}, ["public-practice-tests"], { revalidate: 3600 });
