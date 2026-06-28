@@ -358,6 +358,7 @@ export const getTestHistory = async (userId: string) => {
       createdAt: true,
       test: {
         select: {
+          id: true,
           title: true,
           speedWPM: true,
         },
