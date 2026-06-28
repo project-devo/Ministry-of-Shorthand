@@ -39,7 +39,7 @@ const navItems = [
   { name: "Profile", href: "/dashboard/profile", icon: User },
 ];
 
-export function DashboardHeader({ user }: { user: any }) {
+export function DashboardHeader({ user }: { user: { name?: string | null; image?: string | null } }) {
   const pathname = usePathname();
   const { theme, setTheme } = useTheme();
   const [open, setOpen] = useState(false);

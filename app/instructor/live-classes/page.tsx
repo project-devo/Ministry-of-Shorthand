@@ -10,7 +10,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Button } from "@/components/ui/button";
+
 import { Video } from "lucide-react";
 import { LiveClassForm } from "./live-class-form";
 import { DeleteLiveClassButton } from "./delete-live-class-button";
@@ -44,7 +44,7 @@ export default async function InstructorLiveClassesPage() {
             <Video className="h-12 w-12 text-muted-foreground mb-4" />
             <h3 className="text-lg font-medium">No live classes</h3>
             <p className="text-sm text-muted-foreground max-w-sm mt-2">
-              You haven't scheduled any live classes yet. Click the button above to schedule one.
+              You haven&apos;t scheduled any live classes yet. Click the button above to schedule one.
             </p>
           </div>
         ) : (

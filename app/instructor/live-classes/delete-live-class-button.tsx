@@ -35,8 +35,9 @@ export function DeleteLiveClassButton({ liveClassId }: { liveClassId: string }) 
 
       toast.success("Live class deleted successfully");
       router.refresh();
-    } catch (error: any) {
-      toast.error(error.message || "Failed to delete live class");
+    } catch (error: unknown) {
+      const err = error as Error;
+      toast.error(err.message || "Failed to delete live class");
       setIsDeleting(false);
     }
   };

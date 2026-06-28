@@ -33,7 +33,10 @@ export default async function DashboardCoursesPage() {
             <Card key={course.id} className="border-primary/20 bg-background/50 backdrop-blur-xl overflow-hidden flex flex-col hover:border-primary/50 transition-colors">
               <div className="aspect-video w-full bg-muted relative">
                 {course.thumbnail ? (
-                  <img src={course.thumbnail} alt={course.title} className="object-cover w-full h-full" />
+                  <>
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src={course.thumbnail} alt={course.title} className="object-cover w-full h-full" />
+                  </>
                 ) : (
                   <div className="w-full h-full bg-primary/10 flex items-center justify-center">
                     <BookOpen className="h-10 w-10 text-primary/50" />

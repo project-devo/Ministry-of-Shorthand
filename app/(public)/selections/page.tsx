@@ -47,7 +47,7 @@ export default async function SelectionsPage() {
                   <div className="mt-auto relative">
                     <Star className="h-8 w-8 text-muted-foreground/20 absolute -top-4 -left-2 -z-10" />
                     <p className="italic text-muted-foreground relative z-10 leading-relaxed">
-                      "{selection.quote}"
+                      &ldquo;{selection.quote}&rdquo;
                     </p>
                   </div>
                 )}
@@ -68,7 +68,7 @@ export default async function SelectionsPage() {
   );
 }
 
-function UserIcon(props: any) {
+function UserIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
     <svg
       {...props}

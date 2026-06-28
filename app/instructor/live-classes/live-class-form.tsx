@@ -71,8 +71,9 @@ export function LiveClassForm() {
       setOpen(false);
       form.reset();
       router.refresh();
-    } catch (error: any) {
-      toast.error(error.message || "Failed to schedule live class");
+    } catch (error: unknown) {
+      const err = error as Error;
+      toast.error(err.message || "Failed to schedule live class");
     } finally {
       setIsSubmitting(false);
     }

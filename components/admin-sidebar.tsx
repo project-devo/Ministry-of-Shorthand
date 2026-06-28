@@ -30,7 +30,7 @@ const navItems = [
   { name: "Uploads", href: "/admin/uploads", icon: Upload },
 ];
 
-export function AdminSidebar({ user }: { user: any }) {
+export function AdminSidebar({ user: _user }: { user?: unknown }) {
   const pathname = usePathname();
 
   return (

@@ -3,7 +3,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 
-export function CourseForm({ initialData, instructors }: { initialData: any, instructors: any[] }) {
+export function CourseForm({ initialData: _initialData, instructors: _instructors }: { initialData?: Record<string, unknown> | null, instructors?: { id: string; name: string }[] }) {
   return (
     <Card className="bg-background/50 backdrop-blur-xl border-primary/10">
       <CardHeader>

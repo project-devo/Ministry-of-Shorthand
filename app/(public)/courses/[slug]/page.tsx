@@ -3,9 +3,9 @@ import Image from "next/image";
 import Link from "next/link";
 import { getCourseBySlug } from "@/lib/courses";
 import { Badge } from "@/components/ui/badge";
-import { Button, buttonVariants } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { CheckCircle2, PlayCircle, Video, FileText, User, Clock } from "lucide-react";
 

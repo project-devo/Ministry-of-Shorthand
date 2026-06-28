@@ -1,4 +1,4 @@
-import Image from "next/image";
+
 import { ContactForm } from "@/components/contact-form";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";

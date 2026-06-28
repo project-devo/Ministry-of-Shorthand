@@ -43,7 +43,7 @@ export default async function InstructorCoursesPage() {
             <BookOpen className="h-12 w-12 text-muted-foreground mb-4" />
             <h3 className="text-lg font-medium">No courses found</h3>
             <p className="text-sm text-muted-foreground max-w-sm mt-2">
-              You haven't been assigned as an instructor to any courses yet. Contact an administrator to be assigned to a course.
+              You haven&apos;t been assigned as an instructor to any courses yet. Contact an administrator to be assigned to a course.
             </p>
           </div>
         ) : (

@@ -20,7 +20,7 @@ export function TestRunner({ test }: { test: TestData }) {
   const router = useRouter();
   
   const [testState, setTestState] = useState<"IDLE" | "DICTATION" | "TRANSCRIPTION">("IDLE");
-  const [audioPlayed, setAudioPlayed] = useState(false);
+
   const [transcript, setTranscript] = useState("");
   const [timeRemaining, setTimeRemaining] = useState(60 * 60); // 60 minutes default
   const [timeTaken, setTimeTaken] = useState(0);
@@ -48,6 +48,7 @@ export function TestRunner({ test }: { test: TestData }) {
     return () => {
       if (timerRef.current) clearInterval(timerRef.current);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [testState]);
 
   const handleStartDictation = () => {
@@ -61,7 +62,7 @@ export function TestRunner({ test }: { test: TestData }) {
     if (audioRef.current) {
       audioRef.current.pause();
     }
-    setAudioPlayed(true);
+
     setTestState("TRANSCRIPTION");
   };
 
@@ -91,7 +92,7 @@ export function TestRunner({ test }: { test: TestData }) {
       
       toast.success("Test Submitted!");
       router.push(`/dashboard/practice/${test.id}/result?attemptId=${data.attemptId}`);
-    } catch (error) {
+    } catch (_error) {
       toast.error("Submission failed", {
         description: "Could not save your test results. Please try again.",
       });

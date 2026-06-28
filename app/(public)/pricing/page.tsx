@@ -152,7 +152,7 @@ export default function PricingPage() {
       <div className="mt-24 text-center bg-muted py-12 px-6 rounded-2xl border">
         <h3 className="text-2xl font-bold mb-4">Still have questions?</h3>
         <p className="text-muted-foreground mb-6 max-w-xl mx-auto">
-          If you're not sure which option is right for you, or if you need help with bulk enrollment for your institute, get in touch with us.
+          If you&apos;re not sure which option is right for you, or if you need help with bulk enrollment for your institute, get in touch with us.
         </p>
         <Link href="/about#contact" className={cn(buttonVariants({ variant: "outline" }))}>
           Contact Support

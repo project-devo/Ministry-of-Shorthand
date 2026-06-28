@@ -39,7 +39,7 @@ function VerifyEmailContent() {
       }
 
       setStatus("success");
-    } catch (error) {
+    } catch (_error) {
       setStatus("error");
     }
   };
@@ -64,7 +64,7 @@ function VerifyEmailContent() {
       toast.success("Verification email sent", {
         description: "Please check your inbox.",
       });
-    } catch (error) {
+    } catch (_error) {
       toast.error("Error", {
         description: "Could not resend verification email. Please try again later.",
       });

@@ -36,7 +36,7 @@ export function NotificationsList({ initialNotifications }: { initialNotificatio
       if (!res.ok) throw new Error("Failed to mark as read");
       
       router.refresh();
-    } catch (error) {
+    } catch (_error) {
       // Revert optimistic update
       setNotifications(prev => 
         prev.map(n => n.id === id ? { ...n, isRead: false } : n)
@@ -63,7 +63,7 @@ export function NotificationsList({ initialNotifications }: { initialNotificatio
       
       toast.success("All notifications marked as read");
       router.refresh();
-    } catch (error) {
+    } catch (_error) {
       // Refresh to restore state since reverting all is complex
       router.refresh();
       toast.error("Failed to update notifications");

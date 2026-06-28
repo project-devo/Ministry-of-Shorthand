@@ -23,7 +23,7 @@ function LoginContent() {
   const [isGoogleLoading, setIsGoogleLoading] = useState(false);
   const { register, handleSubmit } = useForm();
 
-  const onSubmit = async (data: any) => {
+  const onSubmit = async (data: Record<string, string>) => {
     setIsLoading(true);
     
     try {
@@ -41,7 +41,7 @@ function LoginContent() {
         router.push(callbackUrl);
         router.refresh();
       }
-    } catch (error) {
+    } catch (_error) {
       toast.error("Error", {
         description: "Something went wrong. Please try again.",
       });
@@ -54,7 +54,7 @@ function LoginContent() {
     setIsGoogleLoading(true);
     try {
       await signIn("google", { callbackUrl });
-    } catch (error) {
+    } catch (_error) {
       setIsGoogleLoading(false);
       toast.error("Error", {
         description: "Could not sign in with Google.",

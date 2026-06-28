@@ -43,8 +43,9 @@ export default function AdminNotificationsPage() {
       toast.success(data.message || "Notification sent successfully.");
       setMessage("");
       
-    } catch (error: any) {
-      toast.error(error.message || "An error occurred");
+    } catch (error: unknown) {
+      const err = error as Error;
+      toast.error(err.message || "An error occurred");
     } finally {
       setLoading(false);
     }
@@ -67,7 +68,7 @@ export default function AdminNotificationsPage() {
             <CardHeader>
               <CardTitle>New Message</CardTitle>
               <CardDescription>
-                This will appear in the target users' notification center.
+                This will appear in the target users&apos; notification center.
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">

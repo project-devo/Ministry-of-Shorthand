@@ -13,7 +13,8 @@ import {
   Flame,
   ArrowRight,
   Clock,
-  Video
+  Video,
+  User
 } from "lucide-react";
 import Link from "next/link";
 import { format } from "date-fns";
@@ -103,7 +104,10 @@ export default async function DashboardPage() {
                   <div key={course.id} className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
                     <div className="w-full sm:w-24 h-16 rounded-md bg-muted overflow-hidden flex-shrink-0 relative">
                       {course.thumbnail ? (
-                        <img src={course.thumbnail} alt={course.title} className="object-cover w-full h-full" />
+                        <>
+                          {/* eslint-disable-next-line @next/next/no-img-element */}
+                          <img src={course.thumbnail} alt={course.title} className="object-cover w-full h-full" />
+                        </>
                       ) : (
                         <div className="w-full h-full bg-primary/10 flex items-center justify-center">
                           <BookOpen className="h-6 w-6 text-primary" />
@@ -209,23 +213,3 @@ export default async function DashboardPage() {
   );
 }
 
-// User icon missing from lucide import, added it locally for the component
-function User(props: any) {
-  return (
-    <svg
-      {...props}
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
-      <circle cx="12" cy="7" r="4" />
-    </svg>
-  );
-}

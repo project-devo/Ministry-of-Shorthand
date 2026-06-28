@@ -31,7 +31,7 @@ const navItems = [
   { name: "Live Classes", href: "/instructor/live-classes", icon: Video },
 ];
 
-export function InstructorHeader({ user }: { user: any }) {
+export function InstructorHeader({ user }: { user: { name?: string | null; image?: string | null } }) {
   const pathname = usePathname();
   const { theme, setTheme } = useTheme();
   const [open, setOpen] = useState(false);

@@ -1,11 +1,11 @@
 import Link from "next/link";
 import { getPublicPracticeTests } from "@/lib/practice";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Button, buttonVariants } from "@/components/ui/button";
 import { Headphones, Activity, Lock, ArrowRight } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { cn } from "@/lib/utils";
+import { buttonVariants } from "@/components/ui/button";
 
 export const metadata = {
   title: "Practice Tests | Ministry of Shorthand",
@@ -85,7 +85,7 @@ export default async function PracticeLandingPage() {
   );
 }
 
-function TestSection({ title, tests }: { title: string; tests: any[] }) {
+function TestSection({ title, tests }: { title: string; tests: { id: string; title: string; speedWPM: number; isFree: boolean; [key: string]: unknown }[] }) {
   if (tests.length === 0) return null;
   
   return (

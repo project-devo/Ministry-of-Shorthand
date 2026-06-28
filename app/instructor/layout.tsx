@@ -21,10 +21,14 @@ export default async function InstructorLayout({
     redirect("/dashboard");
   }
 
-  const user = await prisma.user.findUnique({
-    where: { id: session.user.id },
-    select: { name: true, image: true },
-  });
+    const user = await prisma.user.findUnique({
+      where: { id: session.user.id },
+      select: { name: true, image: true },
+    });
+
+    if (!user) {
+      redirect("/login");
+    }
 
   return (
     <div className="flex min-h-screen flex-col lg:flex-row bg-background">

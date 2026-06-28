@@ -28,7 +28,7 @@ const navItems = [
   { name: "Profile", href: "/dashboard/profile", icon: User },
 ];
 
-export function DashboardSidebar({ user }: { user: any }) {
+export function DashboardSidebar({ user: _user }: { user?: unknown }) {
   const pathname = usePathname();
 
   return (

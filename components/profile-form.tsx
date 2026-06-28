@@ -28,7 +28,7 @@ export function ProfileForm({ user }: { user: ProfileData }) {
   
   const [isSavingProfile, setIsSavingProfile] = useState(false);
   const [isSavingPassword, setIsSavingPassword] = useState(false);
-  const [isUploading, setIsUploading] = useState(false);
+  const [isUploading] = useState(false);
 
   const [name, setName] = useState(user.name || "");
   const [level, setLevel] = useState(user.shorthandLevel || "BEGINNER");
@@ -55,14 +55,14 @@ export function ProfileForm({ user }: { user: ProfileData }) {
       
       toast.success("Profile updated successfully");
       router.refresh();
-    } catch (error) {
+    } catch (_error) {
       toast.error("Failed to update profile");
     } finally {
       setIsSavingProfile(false);
     }
   };
 
-  const handleSavePassword = async (data: any) => {
+  const handleSavePassword = async (data: Record<string, string>) => {
     if (data.newPassword !== data.confirmPassword) {
       toast.error("Passwords do not match");
       return;
@@ -83,7 +83,7 @@ export function ProfileForm({ user }: { user: ProfileData }) {
       
       toast.success("Password changed successfully");
       resetPassword();
-    } catch (error) {
+    } catch (_error) {
       toast.error("Failed to change password. Please check your current password.");
     } finally {
       setIsSavingPassword(false);

@@ -42,7 +42,7 @@ export function ContactForm() {
       });
       reset();
       setValue("interest", ""); // Reset select manually
-    } catch (error) {
+    } catch (_error) {
       toast.error("Error", {
         description: "There was a problem sending your message. Please try again.",
       });

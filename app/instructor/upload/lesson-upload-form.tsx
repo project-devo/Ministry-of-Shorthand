@@ -41,7 +41,7 @@ const uploadSchema = z.object({
   order: z.number().int().min(0),
 });
 
-export function LessonUploadForm({ courses }: { courses: any[] }) {
+export function LessonUploadForm({ courses }: { courses: { id: string; title: string; sections: { id: string; title: string }[] }[] }) {
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [selectedCourseId, setSelectedCourseId] = useState<string>("");
@@ -81,8 +81,9 @@ export function LessonUploadForm({ courses }: { courses: any[] }) {
       toast.success("Lesson uploaded successfully");
       form.reset();
       router.refresh();
-    } catch (error: any) {
-      toast.error(error.message || "Failed to upload lesson");
+    } catch (error: unknown) {
+      const err = error as Error;
+      toast.error(err.message || "Failed to upload lesson");
     } finally {
       setIsSubmitting(false);
     }
@@ -143,7 +144,7 @@ export function LessonUploadForm({ courses }: { courses: any[] }) {
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        {sections.map((section: any) => (
+                        {sections.map((section: { id: string; title: string }) => (
                           <SelectItem key={section.id} value={section.id}>
                             {section.title}
                           </SelectItem>

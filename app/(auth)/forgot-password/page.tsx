@@ -9,7 +9,7 @@ import { cn } from "@/lib/utils";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Loader2, Mail, CheckCircle2 } from "lucide-react";
+import { Loader2, Mail } from "lucide-react";
 
 export default function ForgotPasswordPage() {
   const [isLoading, setIsLoading] = useState(false);
@@ -18,7 +18,7 @@ export default function ForgotPasswordPage() {
   
   const { register, handleSubmit, formState: { errors } } = useForm();
 
-  const onSubmit = async (data: any) => {
+  const onSubmit = async (data: Record<string, string>) => {
     setIsLoading(true);
     
     try {
@@ -36,7 +36,7 @@ export default function ForgotPasswordPage() {
 
       setSubmittedEmail(data.email);
       setIsSubmitted(true);
-    } catch (error) {
+    } catch (_error) {
       toast.error("Error", {
         description: "Something went wrong. Please try again.",
       });

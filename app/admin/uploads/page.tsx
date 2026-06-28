@@ -52,8 +52,9 @@ export default function AdminUploadsPage() {
       const fileInput = document.getElementById("file-upload") as HTMLInputElement;
       if (fileInput) fileInput.value = "";
       
-    } catch (error: any) {
-      toast.error(error.message || "An error occurred during upload");
+    } catch (error: unknown) {
+      const err = error as Error;
+      toast.error(err.message || "An error occurred during upload");
     } finally {
       setLoading(false);
     }

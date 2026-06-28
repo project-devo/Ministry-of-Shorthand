@@ -23,7 +23,7 @@ export default async function InstructorDashboardPage() {
       <div>
         <h1 className="text-3xl font-bold tracking-tight">Instructor Dashboard</h1>
         <p className="text-muted-foreground mt-2">
-          Welcome back, {session.user.name}. Here's an overview of your teaching activity.
+          Welcome back, {session.user.name}. Here&apos;s an overview of your teaching activity.
         </p>
       </div>
 

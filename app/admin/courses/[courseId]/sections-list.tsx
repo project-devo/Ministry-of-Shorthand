@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 
-export function SectionsList({ courseId, sections }: { courseId: string, sections: any[] }) {
+export function SectionsList({ sections }: { courseId?: string, sections: { id: string; title: string; [key: string]: unknown }[] }) {
   return (
     <Card className="bg-background/50 backdrop-blur-xl border-primary/10">
       <CardHeader className="flex flex-row items-center justify-between">

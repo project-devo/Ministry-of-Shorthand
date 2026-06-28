@@ -2,7 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { getPopularCourses } from "@/lib/courses";
 import { getPublishedSelectionResults } from "@/lib/selections";
-import { Button, buttonVariants } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
@@ -203,7 +203,7 @@ export default async function LandingPage() {
                     <h4 className="font-bold text-lg">{selection.name}</h4>
                     <Badge className="mt-2 mb-4" variant="secondary">{selection.achievement}</Badge>
                     {selection.quote && (
-                      <p className="text-sm text-muted-foreground italic">"{selection.quote}"</p>
+                      <p className="text-sm text-muted-foreground italic">&quot;{selection.quote}&quot;</p>
                     )}
                   </CardContent>
                 </Card>
@@ -342,7 +342,7 @@ export default async function LandingPage() {
   );
 }
 
-function UserIcon(props: any) {
+function UserIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
     <svg
       {...props}

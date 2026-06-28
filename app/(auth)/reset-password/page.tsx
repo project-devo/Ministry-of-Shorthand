@@ -39,7 +39,7 @@ function ResetPasswordContent() {
     );
   }
 
-  const onSubmit = async (data: any) => {
+  const onSubmit = async (data: Record<string, string>) => {
     setIsLoading(true);
     
     try {
@@ -65,9 +65,10 @@ function ResetPasswordContent() {
       });
       
       router.push("/login");
-    } catch (error: any) {
+    } catch (error: unknown) {
+      const err = error as Error;
       toast.error("Error", {
-        description: error.message || "Something went wrong. Please try again.",
+        description: err.message || "Something went wrong. Please try again.",
       });
     } finally {
       setIsLoading(false);

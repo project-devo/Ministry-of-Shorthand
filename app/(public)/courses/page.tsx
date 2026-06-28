@@ -4,9 +4,9 @@ import { getPublishedCourses, courseLevelOptions } from "@/lib/courses";
 import { CourseLevel } from "@prisma/client";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Button, buttonVariants } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { Video, BookOpen, Clock } from "lucide-react";
+import { Video, BookOpen } from "lucide-react";
 
 export const metadata = {
   title: "Courses | Ministry of Shorthand",
@@ -115,7 +115,7 @@ export default async function CoursesPage({ searchParams }: CoursesPageProps) {
           <BookOpen className="mx-auto h-12 w-12 text-muted-foreground mb-4" />
           <h3 className="text-lg font-medium">No courses found</h3>
           <p className="text-muted-foreground mt-2 mb-6">
-            We couldn't find any published courses matching your criteria.
+            We couldn&apos;t find any published courses matching your criteria.
           </p>
           {validLevel && (
             <Link href="/courses" className={cn(buttonVariants({ variant: "outline" }))}>

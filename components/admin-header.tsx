@@ -41,7 +41,7 @@ const navItems = [
   { name: "Uploads", href: "/admin/uploads", icon: Upload },
 ];
 
-export function AdminHeader({ user }: { user: any }) {
+export function AdminHeader({ user }: { user: { name?: string | null; image?: string | null; email?: string | null } }) {
   const pathname = usePathname();
   const { theme, setTheme } = useTheme();
   const [open, setOpen] = useState(false);

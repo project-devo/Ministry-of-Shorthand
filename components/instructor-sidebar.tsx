@@ -20,7 +20,7 @@ const navItems = [
   { name: "Live Classes", href: "/instructor/live-classes", icon: Video },
 ];
 
-export function InstructorSidebar({ user }: { user: any }) {
+export function InstructorSidebar({ user: _user }: { user?: unknown }) {
   const pathname = usePathname();
 
   return (

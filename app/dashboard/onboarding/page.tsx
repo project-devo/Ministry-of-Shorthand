@@ -61,7 +61,7 @@ export default function OnboardingPage() {
       });
       router.push("/dashboard");
       router.refresh();
-    } catch (error) {
+    } catch (_error) {
       toast.error("Error", {
         description: "Something went wrong. Please try again.",
       });

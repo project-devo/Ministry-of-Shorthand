@@ -20,7 +20,7 @@ export default function SignupPage() {
   const { register, handleSubmit, watch, formState: { errors } } = useForm();
   const password = watch("password");
 
-  const onSubmit = async (data: any) => {
+  const onSubmit = async (data: Record<string, string>) => {
     setIsLoading(true);
     
     try {
@@ -47,9 +47,10 @@ export default function SignupPage() {
       });
       
       router.push(`/verify-email?email=${encodeURIComponent(data.email)}`);
-    } catch (error: any) {
+    } catch (error: unknown) {
+      const err = error as Error;
       toast.error("Registration Failed", {
-        description: error.message || "Something went wrong. Please try again.",
+        description: err.message || "Something went wrong. Please try again.",
       });
     } finally {
       setIsLoading(false);
@@ -60,7 +61,7 @@ export default function SignupPage() {
     setIsGoogleLoading(true);
     try {
       await signIn("google", { callbackUrl: "/dashboard" });
-    } catch (error) {
+    } catch (_error) {
       setIsGoogleLoading(false);
       toast.error("Error", {
         description: "Could not sign up with Google.",

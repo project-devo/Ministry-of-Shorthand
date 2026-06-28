@@ -21,12 +21,16 @@ export default async function AdminLayout({
     redirect("/dashboard");
   }
 
-  const user = await prisma.user.findUnique({
-    where: { id: session.user.id },
-    select: { name: true, image: true },
-  });
+    const user = await prisma.user.findUnique({
+      where: { id: session.user.id },
+      select: { name: true, image: true },
+    });
 
-  return (
+    if (!user) {
+      redirect("/login");
+    }
+
+   return (
     <div className="flex min-h-screen flex-col lg:flex-row bg-background">
       <AdminSidebar user={user} />
       <div className="flex-1 flex flex-col min-w-0">

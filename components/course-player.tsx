@@ -75,7 +75,7 @@ export function CoursePlayer({ course }: { course: CourseData }) {
       if (hasNext) {
         setActiveLessonId(allLessons[activeLessonIndex + 1].id);
       }
-    } catch (error) {
+    } catch (_error) {
       toast.error("Error", { description: "Could not save progress" });
     } finally {
       setIsMarkingComplete(false);
