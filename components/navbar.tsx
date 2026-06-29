@@ -15,6 +15,11 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import {
+  Sheet,
+  SheetContent,
+  SheetTrigger,
+} from "@/components/ui/sheet";
 import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 
@@ -23,6 +28,7 @@ export function Navbar() {
   const { data: session } = useSession();
   const { setTheme, theme } = useTheme();
   const [unreadCount, setUnreadCount] = useState(0);
+  const [open, setOpen] = useState(false);
 
   useEffect(() => {
     if (session?.user?.id) {
@@ -131,10 +137,92 @@ export function Navbar() {
             </div>
           )}
 
-          <Button variant="ghost" size="icon" className="md:hidden">
-            <Menu className="h-5 w-5" />
-            <span className="sr-only">Toggle Menu</span>
-          </Button>
+          <Sheet open={open} onOpenChange={setOpen}>
+            <SheetTrigger render={<Button variant="ghost" size="icon" className="md:hidden" />}>
+              <Menu className="h-5 w-5" />
+              <span className="sr-only">Toggle Menu</span>
+            </SheetTrigger>
+            <SheetContent side="left" className="flex flex-col p-0">
+              <div className="p-6 border-b">
+                <Link href="/" className="flex items-center gap-2 font-bold text-lg" onClick={() => setOpen(false)}>
+                  Ministry of Shorthand
+                </Link>
+              </div>
+              <div className="flex-1 overflow-y-auto py-4 px-3 space-y-1">
+                {[
+                  { name: "Courses", href: "/courses" },
+                  { name: "Practice", href: "/practice" },
+                  { name: "Pricing", href: "/pricing" },
+                  { name: "Selections", href: "/selections" },
+                ].map((item) => (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    onClick={() => setOpen(false)}
+                    className={cn(
+                      "flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-all",
+                      pathname === item.href
+                        ? "bg-primary/10 text-primary"
+                        : "text-muted-foreground hover:bg-muted hover:text-foreground"
+                    )}
+                  >
+                    {item.name}
+                  </Link>
+                ))}
+              </div>
+              <div className="p-4 border-t space-y-2">
+                <Button
+                  variant="ghost"
+                  className="w-full justify-start text-muted-foreground"
+                  onClick={() => setTheme(theme === "light" ? "dark" : "light")}
+                >
+                  <Sun className="mr-2 h-5 w-5 dark:hidden" />
+                  <Moon className="mr-2 hidden h-5 w-5 dark:block" />
+                  Toggle theme
+                </Button>
+                {session ? (
+                  <>
+                    {session.user.role === "ADMIN" && (
+                      <Link href="/admin" onClick={() => setOpen(false)}>
+                        <Button variant="ghost" className="w-full justify-start text-muted-foreground">
+                          <Settings className="mr-2 h-5 w-5" /> Admin Dashboard
+                        </Button>
+                      </Link>
+                    )}
+                    {(session.user.role === "ADMIN" || session.user.role === "INSTRUCTOR") && (
+                      <Link href="/instructor" onClick={() => setOpen(false)}>
+                        <Button variant="ghost" className="w-full justify-start text-muted-foreground">
+                          <UserIcon className="mr-2 h-5 w-5" /> Instructor Dashboard
+                        </Button>
+                      </Link>
+                    )}
+                    <Link href="/dashboard" onClick={() => setOpen(false)}>
+                      <Button variant="ghost" className="w-full justify-start text-muted-foreground">
+                        <CheckCircle2 className="mr-2 h-5 w-5" /> Student Dashboard
+                      </Button>
+                    </Link>
+                    <Button
+                      variant="ghost"
+                      className="w-full justify-start text-muted-foreground"
+                      onClick={() => signOut()}
+                    >
+                      <LogOut className="mr-2 h-5 w-5" />
+                      Log out
+                    </Button>
+                  </>
+                ) : (
+                  <div className="flex flex-col gap-2">
+                    <Link href="/login" onClick={() => setOpen(false)}>
+                      <Button variant="ghost" className="w-full">Log in</Button>
+                    </Link>
+                    <Link href="/signup" onClick={() => setOpen(false)}>
+                      <Button variant="default" className="w-full">Get Started</Button>
+                    </Link>
+                  </div>
+                )}
+              </div>
+            </SheetContent>
+          </Sheet>
         </div>
       </div>
     </nav>

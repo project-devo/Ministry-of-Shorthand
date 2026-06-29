@@ -15,7 +15,11 @@
     "db:generate": "prisma generate",
     "db:deploy": "node scripts/prisma-direct.mjs migrate deploy",
     "db:status": "node scripts/prisma-direct.mjs migrate status",
-    "db:bootstrap-admin": "node scripts/bootstrap-admin.mjs"
+    "db:bootstrap-admin": "node scripts/bootstrap-admin.mjs",
+    "db:seed:e2e": "node --import tsx scripts/seed-e2e.ts",
+    "test:e2e": "playwright test",
+    "test:e2e:ui": "playwright test --ui",
+    "test:e2e:ci": "pnpm db:seed:e2e && playwright test"
   },
   "dependencies": {
     "@base-ui/react": "^1.6.0",
@@ -50,6 +54,7 @@
     "zod": "^4.3.6"
   },
   "devDependencies": {
+    "@playwright/test": "^1.61.1",
     "@tailwindcss/postcss": "^4.3.1",
     "@types/node": "^20",
     "@types/react": "^19",
@@ -59,6 +64,7 @@
     "postcss": "^8.5.15",
     "prisma": "^6.19.0",
     "tailwindcss": "^4.3.1",
+    "tsx": "^4.22.4",
     "typescript": "^5"
   }
 }

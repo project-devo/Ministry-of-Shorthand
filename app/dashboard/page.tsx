@@ -37,19 +37,19 @@ export default async function DashboardPage() {
   };
 
   return (
-    <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
+    <div className="space-y-10 animate-in fade-in slide-in-from-bottom-4 duration-500">
       <div>
-        <h1 className="text-3xl font-bold tracking-tight">Welcome back, {session.user.name?.split(" ")[0]}!</h1>
+        <h1 className="text-3xl font-bold tracking-tight font-heading">Welcome back, {session.user.name?.split(" ")[0]}!</h1>
         <p className="text-muted-foreground mt-2">
           Here&apos;s an overview of your stenography progress.
         </p>
       </div>
 
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+      <div className="grid gap-5 md:gap-6 md:grid-cols-2 lg:grid-cols-4">
         <Card className="border-primary/20 bg-background/50 backdrop-blur-xl">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
             <CardTitle className="text-sm font-medium">Courses Enrolled</CardTitle>
-            <BookOpen className="h-4 w-4 text-muted-foreground" />
+            <div className="p-1.5 rounded-md bg-primary/10"><BookOpen className="h-4 w-4 text-primary" /></div>
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{overview.courseProgress.length}</div>
@@ -58,9 +58,9 @@ export default async function DashboardPage() {
         </Card>
         
         <Card className="border-primary/20 bg-background/50 backdrop-blur-xl">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
             <CardTitle className="text-sm font-medium">Tests Taken</CardTitle>
-            <Target className="h-4 w-4 text-muted-foreground" />
+            <div className="p-1.5 rounded-md bg-cyan-500/10"><Target className="h-4 w-4 text-cyan-500" /></div>
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{stats.testsTaken}</div>
@@ -69,9 +69,9 @@ export default async function DashboardPage() {
         </Card>
         
         <Card className="border-primary/20 bg-background/50 backdrop-blur-xl">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
             <CardTitle className="text-sm font-medium">Avg Accuracy</CardTitle>
-            <Trophy className="h-4 w-4 text-muted-foreground" />
+            <div className="p-1.5 rounded-md bg-emerald-500/10"><Trophy className="h-4 w-4 text-emerald-500" /></div>
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{stats.avgAccuracy}%</div>
@@ -80,9 +80,9 @@ export default async function DashboardPage() {
         </Card>
         
         <Card className="border-primary/20 bg-background/50 backdrop-blur-xl">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
             <CardTitle className="text-sm font-medium">Current Streak</CardTitle>
-            <Flame className="h-4 w-4 text-orange-500" />
+            <div className="p-1.5 rounded-md bg-orange-500/10"><Flame className="h-4 w-4 text-orange-500" /></div>
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{stats.streakDays} Days</div>
@@ -99,7 +99,7 @@ export default async function DashboardPage() {
           </CardHeader>
           <CardContent className="flex-1">
             {overview.courseProgress.length > 0 ? (
-              <div className="space-y-6">
+              <div className="space-y-8">
                 {overview.courseProgress.slice(0, 3).map((course) => (
                   <div key={course.id} className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
                     <div className="w-full sm:w-24 h-16 rounded-md bg-muted overflow-hidden flex-shrink-0 relative">

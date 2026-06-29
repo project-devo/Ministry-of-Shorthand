@@ -6,3 +6,4 @@ allowBuilds:
   core-js: true
   unrs-resolver: true
   "@sentry/cli": true
+  esbuild: true

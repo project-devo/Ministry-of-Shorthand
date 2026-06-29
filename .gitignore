@@ -39,3 +39,10 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Playwright reports & results
+/playwright-report
+/test-results
+
+# Agent framework configurations/logs
+.agents/
